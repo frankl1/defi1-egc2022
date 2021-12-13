@@ -52,13 +52,15 @@ verbose = args.verbose
 sources = pd.read_csv('Data/points_eau.csv', delimiter=';')
 # sources = sources.head(7)
 
-with open('performances.csv', 'a+', buffering=1) as perf_file:
+with open('performances.csv', 'a+', buffering=1) as perf_file, open('stats.csv', 'a+', buffering=1) as stat_file:
 
     if not perf_file.tell():
         perf_file.write(',val_loss,test_loss,best_model_at_test,runtime_in_sec\n')
+        stat_file.write(',val_loss,test_loss,model,train_time_in_sec\n')
     else:
         perf = pd.read_csv('performances.csv', index_col=0)
         sources = sources[~sources.CODE_BSS.isin(perf.index)]
+
 
     for code_bss, bss_id in zip(sources.CODE_BSS, sources.BSS_ID):
 
@@ -226,6 +228,8 @@ with open('performances.csv', 'a+', buffering=1) as perf_file:
         for name, forecaster in models.items():
             window_tmp = no_suffled_window if name == 'lstm' else window
 
+            train_start_time = time.time()
+
             history = compile_and_fit(forecaster, window_tmp, patience=patience, epochs=MAX_EPOCHS, verbose=verbose)
 
             val_perf = forecaster.evaluate(window_tmp.val, verbose=verbose)
@@ -238,6 +242,8 @@ with open('performances.csv', 'a+', buffering=1) as perf_file:
                 label_index = window_tmp.column_indices['niveau_nappe_eau'] if 'AR' in name else None
 
             models[name] = forecaster
+
+            stat_file.write(f"{code_bss},{val_perf},{test_perf},{name},{time.time() - train_start_time}\n")
 
         predictions = forecast(models[best_model], best_model, test_df, input_width, label_width, train_mean, train_std, label_index=label_index)
         
