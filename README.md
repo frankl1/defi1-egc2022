@@ -10,7 +10,14 @@ https://www.egc.asso.fr/manifestations/defi-egc/defi-egc-2022-prevoir-levolution
 
 ![](./Images/forecasts.png)
 
+### Cartographie de nos modèles
+
+![Cartographie de nos modèles](./Images/plot_clusters.png)
+
+Nous identifions deux clusteurs assez bien délimités pour les modèles LSTM et CONV respectivement, et un cluster entre les deux pour le modèle RESNET. 
+
 ## Dépendances:
+
 - Python3
 - Tensorflow 2
 - Pandas
