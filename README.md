@@ -8,7 +8,7 @@ https://www.egc.asso.fr/manifestations/defi-egc/defi-egc-2022-prevoir-levolution
 
 ## Nos prédictions du 15 oct. 2021 au 15 jan. 2022
 
-![](./Images/forecasts.png)
+![](./Images/forecasts-with-ground-truth.png)
 
 ### Cartographie de nos modèles
 
